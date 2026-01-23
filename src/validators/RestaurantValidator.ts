@@ -1,5 +1,5 @@
 import { body, query } from "express-validator";
-import User from "../schemas/User";
+import User from "../models/User";
 
 export class RestaurantValidator {
   static createRestaurant() {

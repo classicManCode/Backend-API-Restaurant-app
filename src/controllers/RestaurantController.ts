@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import Restaurant from "../schemas/Restaurant";
+import Restaurant from "../models/Restaurant";
 import { EncryptPassword } from "../utils/EncryptPassword";
 import { Utils } from "../utils/Utils";
-import User from "../schemas/User";
-import Category from "../schemas/Category";
+import User from "../models/User";
+import Category from "../models/Category";
 
 export class RestaurantController {
   static async createRestaurant(

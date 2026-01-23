@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import City from "../schemas/City";
+import City from "../models/City";
 
 export class CityController {
   static async createCity(req: Request, res: Response, next: NextFunction) {

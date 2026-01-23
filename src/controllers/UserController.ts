@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import User from "../schemas/User";
+import User from "../models/User";
 import { Utils } from "../utils/Utils";
 import { SendGridMailer } from "../utils/SendGridMailer";
 import Jwt from "jsonwebtoken";
@@ -58,7 +58,7 @@ class UserControllers {
   static async verifyEmailToken(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) {
     const email = (req as any).user.email;
     const verification_token = req.body.verification_token;
@@ -71,16 +71,17 @@ class UserControllers {
         },
         {
           email_verified: true,
+          updatedAt: new Date(),
         },
         {
           new: true,
-        }
+        },
       );
       if (user) {
         res.status(200).send(user);
       } else {
         throw new Error(
-          "Email verification token expired. Please try agian..."
+          "Email verification token expired. Please try agian...",
         );
       }
     } catch (err) {
@@ -91,7 +92,7 @@ class UserControllers {
   static async resendVerificationEmail(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) {
     // res.send((req as any).user)
     const email = (req as any).user.email;
@@ -104,7 +105,7 @@ class UserControllers {
         {
           verification_token: verification_token,
           verification_token_time: Date.now() + new Utils().MAX_TOKEN_TIME,
-        }
+        },
       );
       if (user) {
         await SendGridMailer.sendMail({
@@ -157,7 +158,7 @@ class UserControllers {
   static async sendPasswordResetToken(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) {
     const email = req.query.email;
     const reset_password_token = Utils.generateVerificationToken();
@@ -170,7 +171,7 @@ class UserControllers {
           reset_password_token: reset_password_token,
           reset_password_token_time: Date.now() + new Utils().MAX_TOKEN_TIME,
           updatedAt: new Date(),
-        }
+        },
       );
 
       if (!user) throw new Error("This Email is not registered. Try again...");
@@ -191,7 +192,7 @@ class UserControllers {
   static verifyResetPasswordToken(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) {
     res.json({
       success: true,
@@ -203,13 +204,12 @@ class UserControllers {
     const user = (req as any).user;
     const new_password = req.body.new_password;
     try {
-      const encryptedPassword = await EncryptPassword.hashPassword(
-        new_password
-      );
+      const encryptedPassword =
+        await EncryptPassword.hashPassword(new_password);
       const updatedUser = await User.findByIdAndUpdate(
         user._id,
         { password: encryptedPassword, updatedAt: new Date() },
-        { new: true }
+        { new: true },
       );
       if (!updatedUser) {
         throw new Error("Email is not registered");
@@ -232,7 +232,7 @@ class UserControllers {
   static async updatePhoneNumber(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) {
     const user = (req as any).user;
     const phone = req.body.phone;
@@ -241,7 +241,7 @@ class UserControllers {
       const updatedUser = await User.findByIdAndUpdate(
         user.aud,
         { phone: phone, updatedAt: new Date() },
-        { new: true }
+        { new: true },
       );
       res.status(200).json(updatedUser);
     } catch (err) {
@@ -252,7 +252,7 @@ class UserControllers {
   static async updateUserProfile(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) {
     const user = (req as any).user;
     const email = req.body.email;
@@ -280,7 +280,7 @@ class UserControllers {
           verification_token_time: Date.now() + new Utils().MAX_TOKEN_TIME,
           updatedAt: new Date(),
         },
-        { new: true }
+        { new: true },
       );
       if (!updatedUser) {
         throw new Error("Failed to update user profile");

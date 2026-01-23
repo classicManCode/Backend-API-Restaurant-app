@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import Banner from "../schemas/Banner";
+import Banner from "../models/Banner";
 
 export class BannerController {
   static async createBanner(req: Request, res: Response, next: NextFunction) {

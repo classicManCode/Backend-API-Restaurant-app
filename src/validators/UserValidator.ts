@@ -1,5 +1,5 @@
 import { body, query } from "express-validator";
-import User from "../schemas/User";
+import User from "../models/User";
 
 export class UserValidator {
   static signup() {
@@ -119,7 +119,7 @@ export class UserValidator {
           });
           if (!user) {
             throw new Error(
-              "Reset token is invalid or has expired. Please request a new one."
+              "Reset token is invalid or has expired. Please request a new one.",
             );
           }
           // req.user = user;
@@ -148,7 +148,7 @@ export class UserValidator {
         .custom(async (reset_password_token, { req }) => {
           if (reset_password_token !== req.user.reset_password_token) {
             throw new Error(
-              "Reset token is invalid or has expired. Please request a new one."
+              "Reset token is invalid or has expired. Please request a new one.",
             );
           }
           return true;
