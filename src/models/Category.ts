@@ -1,5 +1,4 @@
 import { Schema, Types, model, Document } from "mongoose";
-import { ref } from "node:process";
 
 export interface ICategory extends Document {
   restaurant_id: Types.ObjectId;
@@ -17,4 +16,4 @@ const CategorySchema = new Schema(
   { timestamps: true },
 );
 
-export default model("Category", CategorySchema);
+export default model<ICategory>("Category", CategorySchema);

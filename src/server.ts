@@ -7,6 +7,7 @@ import BannerRoutes from "./routes/BannerRoutes";
 import CityRoutes from "./routes/CityRoutes";
 import RestaurantRoutes from "./routes/RestaurantRoutes";
 import CategoryRoutes from "./routes/CategoryRoutes";
+import ItemRoutes from "./routes/ItemRoutes";
 dotenv.config({ quiet: true });
 
 class Server {

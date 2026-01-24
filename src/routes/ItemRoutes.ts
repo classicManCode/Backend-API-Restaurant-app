@@ -15,17 +15,17 @@ class ItemRoutes {
     this.DELETE();
   }
   GET() {
-    this.router.get(
-      "/cities",
-      ItemController.getItems
-    );
+    this.router.get("/cities", ItemController.getItems);
   }
   POST() {
     this.router.post(
-      "/create",
+      "/create-item",
+      GlobalMiddleWares.auth,
+      GlobalMiddleWares.adminRole,
+      new Utils().multer.single("itemImages"),
       ItemValidator.createItem(),
       GlobalMiddleWares.checkError,
-      ItemController.createItem
+      ItemController.createItem,
     );
   }
   PUT() {}

@@ -22,7 +22,9 @@ class CategoryRoutes {
   }
   POST() {
     this.router.post(
-      "/create",
+      "/create-category",
+      GlobalMiddleWares.auth,
+      GlobalMiddleWares.adminRole,
       CategoryValidator.createBanner(),
       GlobalMiddleWares.checkError,
       CategoryController.createCategory
