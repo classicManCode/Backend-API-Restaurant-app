@@ -147,4 +147,26 @@ export class RestaurantController {
       next(err);
     }
   }
+
+  static async getRestaurants(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const restaurant = await Restaurant.find({
+        status: "active",
+      });
+      if (restaurant.length === 0) {
+        (req as any).errorStatus = 404;
+        throw new Error("No restaurant found");
+      }
+      res.status(200).json({
+        message: "Restaurants fetched successfully",
+        restaurant,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }

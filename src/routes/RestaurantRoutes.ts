@@ -15,10 +15,27 @@ class RestaurantRoutes {
     this.DELETE();
   }
   GET() {
-    // this.router.get("/restaurants", RestaurantController.getRestaurants);
-    this.router.get("/nearbyRestaurants",GlobalMiddleWares.auth,RestaurantValidator.getNearbyRestaurants(),GlobalMiddleWares.checkError, RestaurantController.getNearbyRestaurants);
+    this.router.get(
+      "/getRestaurants",
+      GlobalMiddleWares.auth,
+      GlobalMiddleWares.checkError,
+      RestaurantController.getRestaurants,
+    );
+    this.router.get(
+      "/nearbyRestaurants",
+      GlobalMiddleWares.auth,
+      RestaurantValidator.getNearbyRestaurants(),
+      GlobalMiddleWares.checkError,
+      RestaurantController.getNearbyRestaurants,
+    );
 
-    this.router.get("/searchNearbyRestaurants",GlobalMiddleWares.auth,RestaurantValidator.searchNearbyRestaurants(),GlobalMiddleWares.checkError, RestaurantController.searchNearbyRestaurants);
+    this.router.get(
+      "/searchNearbyRestaurants",
+      GlobalMiddleWares.auth,
+      RestaurantValidator.searchNearbyRestaurants(),
+      GlobalMiddleWares.checkError,
+      RestaurantController.searchNearbyRestaurants,
+    );
   }
   POST() {
     this.router.post(
@@ -28,7 +45,7 @@ class RestaurantRoutes {
       new Utils().multer.single("restaurantImages"),
       RestaurantValidator.createRestaurant(),
       GlobalMiddleWares.checkError,
-      RestaurantController.createRestaurant
+      RestaurantController.createRestaurant,
     );
   }
   PUT() {}

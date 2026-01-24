@@ -1,4 +1,4 @@
-import { body, query } from "express-validator";
+import { body, param, query } from "express-validator";
 import Restaurant from "../models/Restaurant";
 import Category from "../models/Category";
 
@@ -45,6 +45,22 @@ export class ItemValidator {
           if (!category) {
             throw new Error("Invalid Category ID");
           }
+          return true;
+        }),
+    ];
+  }
+
+  static getMenuItems() {
+    return [
+      param("restaurantID")
+        .notEmpty()
+        .withMessage("Restaurant ID is required")
+        .isMongoId()
+        .withMessage("Invalid Restaurant ID")
+        .custom(async (restaurantID, { req }) => {
+          const restaurant = await Restaurant.findById(restaurantID);
+          if (!restaurant) throw new Error("This restaurant does not exist");
+          req.restaurant = restaurant;
           return true;
         }),
     ];

@@ -15,7 +15,7 @@ class ItemRoutes {
     this.DELETE();
   }
   GET() {
-    this.router.get("/cities", ItemController.getItems);
+    this.router.get("/items-menu/:restaurantID",GlobalMiddleWares.auth,ItemValidator.getMenuItems(),GlobalMiddleWares.checkError, ItemController.getMenuItems);
   }
   POST() {
     this.router.post(

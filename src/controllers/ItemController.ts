@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Item from "../models/Item";
+import Category from "../models/Category";
 
 export class ItemController {
   static async createItem(req: Request, res: Response, next: NextFunction) {
@@ -36,12 +37,26 @@ export class ItemController {
     });
   }
 
-  static async getItems(req: Request, res: Response, next: NextFunction) {
-    const { restaurantID } = req.params;
+  static async getMenuItems(req: Request, res: Response, next: NextFunction) {
+    const { restaurant }: any = req;
     try {
-      const item = await Item.find({ restaurant_id: restaurantID }, { __v: 0 });
+      const category = await Category.find(
+        { restaurant_id: restaurant._id },
+        { __v: 0 },
+      );
+      const item = await Item.find(
+        {
+          restaurant_id: restaurant._id,
+          // status: true,
+        },
+        { __v: 0 },
+      );
+      // .populate("category_id");
+
       res.status(200).json({
-        message: "Categories fetched successfully",
+        message: "Menu items fetched successfully",
+        restaurant,
+        category,
         item,
       });
     } catch (err) {
