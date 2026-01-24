@@ -38,12 +38,31 @@ export class RestaurantValidator {
         },
       ),
       body("address").notEmpty().withMessage("Address is required").isString(),
-      body("location").notEmpty().withMessage("Location is required"),
-      body("cuisines").notEmpty().withMessage("Cuisines are required"),
+      body("location")
+        .notEmpty()
+        .withMessage("Location is required")
+        .isString(),
+      body("categories")
+        .notEmpty()
+        .withMessage("Categories is required")
+        .isString(),
+      body("cuisines")
+        .notEmpty()
+        .withMessage("Cuisines are required")
+        .isString(),
       body("price").notEmpty().withMessage("Price is required").isNumeric(),
-      body("openTime").notEmpty().withMessage("Open time is required"),
-      body("closeTime").notEmpty().withMessage("Close time is required"),
-      body("deliveryTime").notEmpty().withMessage("Delivery time is required"),
+      body("openTime")
+        .notEmpty()
+        .withMessage("Open time is required")
+        .isString(),
+      body("closeTime")
+        .notEmpty()
+        .withMessage("Close time is required")
+        .isString(),
+      body("deliveryTime")
+        .notEmpty()
+        .withMessage("Delivery time is required")
+        .isString(),
       body("status").notEmpty().withMessage("Status is required").isString(),
     ];
   }

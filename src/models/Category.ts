@@ -1,7 +1,8 @@
 import { Schema, Types, model, Document } from "mongoose";
+import { ref } from "node:process";
 
 export interface ICategory extends Document {
-  user_id: Types.ObjectId;
+  restaurant_id: Types.ObjectId;
   name: string;
 
   createdAt: Date;
@@ -10,10 +11,10 @@ export interface ICategory extends Document {
 
 const CategorySchema = new Schema(
   {
-    user_id: { type: Types.ObjectId, required: true },
+    restaurant_id: { type: Types.ObjectId, ref: "Restaurant", required: true },
     name: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default model("Category", CategorySchema);

@@ -42,7 +42,7 @@ const RestaurantSchema = new Schema(
     isClosed: { type: Boolean, required: true, default: false },
     status: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default model<IRestaurant>("Restaurant", RestaurantSchema);

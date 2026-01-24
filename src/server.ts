@@ -1,11 +1,12 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
-import UserRoutes from "./router/UserRoutes";
+import UserRoutes from "./routes/UserRoutes";
 import cors from "cors";
 import dotenv from "dotenv";
-import BannerRoutes from "./router/BannerRoutes";
-import CityRoutes from "./router/CityRoutes";
-import RestaurantRoutes from "./router/RestaurantRoutes";
+import BannerRoutes from "./routes/BannerRoutes";
+import CityRoutes from "./routes/CityRoutes";
+import RestaurantRoutes from "./routes/RestaurantRoutes";
+import CategoryRoutes from "./routes/CategoryRoutes";
 dotenv.config({ quiet: true });
 
 class Server {
@@ -31,6 +32,8 @@ class Server {
     this.app.use("/api/banner", BannerRoutes);
     this.app.use("/api/city", CityRoutes);
     this.app.use("/api/restaurant", RestaurantRoutes);
+    this.app.use("/api/category", CategoryRoutes);
+    this.app.use("/api/item", ItemRoutes);
   }
 
   setConnectDB() {
