@@ -1,7 +1,7 @@
 import Jwt from "jsonwebtoken";
 
 export class JWT {
-  static JWTverify(token: string): Promise<any> {
+  static jwtVerify(token: string): Promise<any> {
     const jwtSecret = process.env.JWT_SECRET;
     if (!jwtSecret) {
       throw new Error("JWT_SECRET is not defined");

@@ -14,11 +14,10 @@ export class GlobalMiddleWares {
 
   static async auth(req: Request, res: Response, next: NextFunction) {
     const headers_auth = req.headers.authorization;
-    const token = headers_auth
-      ? headers_auth.slice(7, headers_auth.length)
-      : null;
-    // const auth_headers = headers_auth?.split(" ")[1];
-    // const token = auth_headers
+    const token =
+      headers_auth && headers_auth.startsWith("Bearer ")
+        ? headers_auth.split(" ")[1]
+        : null;
 
     if (!token) {
       (req as any).errorStatus = 401;
@@ -27,9 +26,8 @@ export class GlobalMiddleWares {
     }
 
     try {
-      const decoded = await JWT.JWTverify(token);
+      const decoded = await JWT.jwtVerify(token);
       (req as any).user = decoded;
-      console.log((req as any).user.aud);
       next();
     } catch (err) {
       (req as any).errorStatus = 401;
@@ -41,7 +39,6 @@ export class GlobalMiddleWares {
     const user = (req as any).user;
     if (user.type !== "admin") {
       (req as any).errorStatus = 401;
-      console.log(user.type);
       return next(new Error("You are not authorized to perform this action"));
     }
     next();
@@ -61,7 +58,7 @@ export class GlobalMiddleWares {
 //   }
 
 //   try {
-//     const decoded = await JWT.JWTverify(token);
+//     const decoded = await JWT.jwtVerify(token);
 //     (req as any).user = decoded;
 //     next();
 //   } catch (err) {

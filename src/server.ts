@@ -8,6 +8,8 @@ import CityRoutes from "./routes/CityRoutes";
 import RestaurantRoutes from "./routes/RestaurantRoutes";
 import CategoryRoutes from "./routes/CategoryRoutes";
 import ItemRoutes from "./routes/ItemRoutes";
+import AddressRoutes from "./routes/AddressRoutes";
+
 dotenv.config({ quiet: true });
 
 class Server {
@@ -35,6 +37,7 @@ class Server {
     this.app.use("/api/restaurant", RestaurantRoutes);
     this.app.use("/api/category", CategoryRoutes);
     this.app.use("/api/item", ItemRoutes);
+    this.app.use("/api/address", AddressRoutes);
   }
 
   setConnectDB() {
@@ -67,7 +70,7 @@ class Server {
           message: err.message || "Something went wrong. Please try again",
           status_code: errorStatus,
         });
-      }
+      },
     );
   }
 }
