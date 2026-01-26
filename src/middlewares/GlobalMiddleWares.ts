@@ -44,24 +44,3 @@ export class GlobalMiddleWares {
     next();
   }
 }
-
-//  static async auth(req: Request, res: Response, next: NextFunction) {
-//   const headers_auth = req.headers.authorization;
-//   const token =
-//     headers_auth && headers_auth.startsWith("Bearer ")
-//       ? headers_auth.slice(7, headers_auth.length)
-//       : headers_auth;
-
-//   if (!token) {
-//     next(new Error("User not authenticated"));
-//     return;
-//   }
-
-//   try {
-//     const decoded = await JWT.jwtVerify(token);
-//     (req as any).user = decoded;
-//     next();
-//   } catch (err) {
-//     next(err);
-//   }
-// }

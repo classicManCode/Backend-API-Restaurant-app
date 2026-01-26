@@ -9,6 +9,7 @@ import RestaurantRoutes from "./routes/RestaurantRoutes";
 import CategoryRoutes from "./routes/CategoryRoutes";
 import ItemRoutes from "./routes/ItemRoutes";
 import AddressRoutes from "./routes/AddressRoutes";
+import OrderRoutes from "./routes/OrderRoutes";
 
 dotenv.config({ quiet: true });
 
@@ -38,6 +39,7 @@ class Server {
     this.app.use("/api/category", CategoryRoutes);
     this.app.use("/api/item", ItemRoutes);
     this.app.use("/api/address", AddressRoutes);
+    this.app.use("/api/order", OrderRoutes);
   }
 
   setConnectDB() {

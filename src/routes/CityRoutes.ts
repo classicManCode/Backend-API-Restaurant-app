@@ -23,7 +23,7 @@ class CityRoutes {
   POST() {
     this.router.post(
       "/create",
-      CityValidator.createBanner(),
+      CityValidator.createCity(),
       GlobalMiddleWares.checkError,
       CityController.createCity
     );
