@@ -22,13 +22,13 @@ export class OrderValidator {
         .isIn(["pending", "delivered"])
         .withMessage("Invalid status"),
       body("orders").notEmpty().withMessage("Order item is required").isString().withMessage("Invalid order item or is not array"),
-      body("address").notEmpty().withMessage("Order address is required").isString().withMessage("Invalid order address or is not object"),
-      body("total").notEmpty().withMessage("Order total is required").isNumeric().withMessage("Invalid order total or is not numeric"),
-      body("deliveryCharges").notEmpty().withMessage("Order delivery charges is required").isNumeric().withMessage("Invalid order delivery charges or is not numeric"),
-      body("grandTotal").notEmpty().withMessage("Order grand total is required").isNumeric().withMessage("Invalid order grand total or is not numeric"),
+      body("address").notEmpty().withMessage("Customer address is required").isString().withMessage("Invalid order address or is not object"),
+      body("total").notEmpty().withMessage("Total cost of order is required").isNumeric().withMessage("Invalid order total or is not numeric"),
+      body("deliveryCharges").notEmpty().withMessage("Delivery charges is required").isNumeric().withMessage("Invalid order delivery charges or is not numeric"),
+      body("grandTotal").notEmpty().withMessage("Grand total cost of order is required").isNumeric().withMessage("Invalid order grand total or is not numeric"),
       body("paymentMode")
         .notEmpty()
-        .withMessage("Order name is required")
+        .withMessage("Payment mode is required")
         .isString()
         .isIn(["cash", "online"])
         .withMessage("Invalid payment mode"),
