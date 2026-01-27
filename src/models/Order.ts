@@ -29,9 +29,9 @@ const OrderSchema = new Schema(
       required: true,
       default: "pending",
     },
-    total: { type: String, required: true },
-    deliveryCharges: { type: String, required: true },
-    grandTotal: { type: String, required: true },
+    total: { type: Number, required: true },
+    deliveryCharges: { type: Number, required: true },
+    grandTotal: { type: Number, required: true },
     paymentMode: { type: String, required: true },
     paymentStatus: {
       type: String,

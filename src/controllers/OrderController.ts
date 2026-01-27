@@ -13,12 +13,15 @@ export class OrderController {
     try {
       let orderDoc: IOrder = {
         user_id,
-        ...orderData,
         restaurant_id,
-        orders: JSON.parse(orderData.order),
+        orders: JSON.parse(orderData.orders),
         address: JSON.parse(orderData.address),
-        // orderItems: orderData.orderItems,
-        // address: orderData.address,
+        status: "pending",
+        total: orderData.total,
+        deliveryCharges: orderData.deliveryCharges,
+        grandTotal: orderData.grandTotal,
+        paymentMode: orderData.paymentMode,
+        paymentStatus: orderData.paymentStatus,
       };
       if (orderData.instructions) {
         orderDoc = { ...orderDoc, instructions: orderData.instructions };
@@ -34,7 +37,16 @@ export class OrderController {
   }
 
   static async getOrders(req: Request, res: Response, next: NextFunction) {
-    const order = await Order.find({});
-    res.status(200).send(order);
+    const user_id = (req as any).user.aud;
+    const order = await Order.find({ user_id }, { user_id: 0, __v: 0 })
+      .populate(
+        "restaurant_id",
+        // "address name"
+      )
+      .exec();
+    res.status(201).json({
+      message: "Orders fetched successfully",
+      customerOrder: order,
+    });
   }
 }

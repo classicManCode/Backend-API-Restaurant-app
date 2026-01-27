@@ -21,11 +21,11 @@ export class OrderValidator {
         .isString()
         .isIn(["pending", "delivered"])
         .withMessage("Invalid status"),
-      body("order").notEmpty().withMessage("Order item is required").isString(),
-      body("address").notEmpty().withMessage("Order address is required").isString(),
-      body("total").notEmpty().withMessage("Order total is required").isString(),
-      body("deliveryCharges").notEmpty().withMessage("Order delivery charges is required").isString(),
-      body("grandTotal").notEmpty().withMessage("Order grand total is required").isString(),
+      body("orders").notEmpty().withMessage("Order item is required").isString().withMessage("Invalid order item or is not array"),
+      body("address").notEmpty().withMessage("Order address is required").isString().withMessage("Invalid order address or is not object"),
+      body("total").notEmpty().withMessage("Order total is required").isNumeric().withMessage("Invalid order total or is not numeric"),
+      body("deliveryCharges").notEmpty().withMessage("Order delivery charges is required").isNumeric().withMessage("Invalid order delivery charges or is not numeric"),
+      body("grandTotal").notEmpty().withMessage("Order grand total is required").isNumeric().withMessage("Invalid order grand total or is not numeric"),
       body("paymentMode")
         .notEmpty()
         .withMessage("Order name is required")
