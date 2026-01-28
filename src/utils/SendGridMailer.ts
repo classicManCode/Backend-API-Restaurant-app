@@ -1,28 +1,33 @@
 import sgMail from "@sendgrid/mail";
 
-export class SendGridMailer {
-  static async sendMail(data: {
-    to: [string];
-    // from: string;
-    subject: string;
-    html: string;
-  }): Promise<any> {
-    const sendgridApiKey = process.env.SENDGRID_API_KEY;
-    if (!sendgridApiKey) {
-      throw new Error("SENDGRID_API_KEY is not defined");
-    }
-    sgMail.setApiKey(sendgridApiKey);
+const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY!;
+const SENDGRID_SENDER_EMAIL = process.env.SENDGRID_SENDER_EMAIL!;
 
+if (!process.env.SENDGRID_API_KEY || !process.env.SENDGRID_SENDER_EMAIL) {
+  throw new Error("SendGrid environment variables are missing");
+}
+
+sgMail.setApiKey(SENDGRID_API_KEY);
+
+type sendGridData = {
+  to: string | string[];
+  subject: string;
+  html: string;
+};
+
+export class SendGridMailer {
+  static async sendMail(data: sendGridData): Promise<any> {
     const msg = {
-      from: "legenderyprime@gmail.com",
+      from: SENDGRID_SENDER_EMAIL,
       to: data.to,
       subject: data.subject,
       html: data.html,
     };
     try {
       return await sgMail.send(msg);
-    } catch (err) {
-      throw err;
+    } catch (error) {
+      console.error("SendGrid error:", error);
+      throw new Error("Failed to send email");
     }
   }
 }

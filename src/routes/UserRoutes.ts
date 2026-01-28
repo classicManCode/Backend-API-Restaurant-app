@@ -17,36 +17,36 @@ class UsersRoutes {
     this.router.get(
       "/signup",
       GlobalMiddleWares.checkError,
-      UserController.signup
+      UserController.signup,
     );
     this.router.get(
-      "/send/verification/email",
+      "/send-verification-email",
       GlobalMiddleWares.auth,
-      UserController.resendVerificationEmail
+      UserController.resendVerificationEmail,
     );
     this.router.get(
       "/send/reset/password",
       UserValidator.checkPasswordResetEmail(),
       GlobalMiddleWares.checkError,
-      UserController.sendPasswordResetToken
+      UserController.sendPasswordResetToken,
     );
     this.router.get(
       "/login",
       UserValidator.login(),
       GlobalMiddleWares.checkError,
-      UserController.login
+      UserController.login,
     );
     this.router.get(
       "/verify/resetPasswordToken",
       UserValidator.verifyPasswordResetToken(),
       GlobalMiddleWares.checkError,
-      UserController.verifyResetPasswordToken
+      UserController.verifyResetPasswordToken,
     );
     this.router.get(
       "/profile",
       GlobalMiddleWares.auth,
       GlobalMiddleWares.checkError,
-      UserController.profile
+      UserController.profile,
     );
   }
   POST() {
@@ -54,7 +54,7 @@ class UsersRoutes {
       "/signup",
       UserValidator.signup(),
       GlobalMiddleWares.checkError,
-      UserController.signup
+      UserController.signup,
     );
   }
   PUT() {}
@@ -64,14 +64,14 @@ class UsersRoutes {
       UserValidator.verifyUserEmail(),
       GlobalMiddleWares.auth,
       GlobalMiddleWares.checkError,
-      UserController.verifyEmailToken
+      UserController.verifyEmailToken,
     );
 
     this.router.patch(
       "/reset_password",
       UserValidator.resetPassword(),
       GlobalMiddleWares.checkError,
-      UserController.resetPassword
+      UserController.resetPassword,
     );
 
     this.router.patch(
@@ -79,7 +79,7 @@ class UsersRoutes {
       GlobalMiddleWares.auth,
       UserValidator.verifyPhoneNumber(),
       GlobalMiddleWares.checkError,
-      UserController.updatePhoneNumber
+      UserController.updatePhoneNumber,
     );
 
     this.router.patch(
@@ -87,7 +87,7 @@ class UsersRoutes {
       GlobalMiddleWares.auth,
       UserValidator.verifyUserProfile(),
       GlobalMiddleWares.checkError,
-      UserController.updateUserProfile
+      UserController.updateUserProfile,
     );
   }
   DELETE() {}

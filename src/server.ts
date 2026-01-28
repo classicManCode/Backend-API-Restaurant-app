@@ -2,7 +2,6 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import UserRoutes from "./routes/UserRoutes";
 import cors from "cors";
-import dotenv from "dotenv";
 import BannerRoutes from "./routes/BannerRoutes";
 import CityRoutes from "./routes/CityRoutes";
 import RestaurantRoutes from "./routes/RestaurantRoutes";
@@ -11,7 +10,7 @@ import ItemRoutes from "./routes/ItemRoutes";
 import AddressRoutes from "./routes/AddressRoutes";
 import OrderRoutes from "./routes/OrderRoutes";
 
-dotenv.config({ quiet: true });
+
 
 class Server {
   app: Express = express();
