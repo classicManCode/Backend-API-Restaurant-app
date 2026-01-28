@@ -28,11 +28,31 @@ export class AddressController {
 
   static async getAddress(req: Request, res: Response, next: NextFunction) {
     const user_id = (req as any).user.aud;
+    const perPage = 5;
+    const currentPage = Number(req.query.page) || 1;
+    let prevPage: number | null = currentPage == 1 ? null : currentPage - 1;
+    let nextPage: number | null = currentPage + 1;
     try {
-      const address = await Address.find({ user_id }, { user_id: 0, __v: 0 });
+      const addressCount = await Address.countDocuments({ user_id });
+      const totalPages = Math.ceil(addressCount / perPage);
+      if (totalPages == 0 || totalPages == currentPage) {
+        nextPage = null;
+      }
+      if (totalPages < currentPage) {
+        throw new Error("No more addresses");
+      }
+      const address = await Address.find({ user_id }, { user_id: 0, __v: 0 })
+        .skip(currentPage * perPage - perPage)
+        .limit(perPage);
       res.status(200).json({
+        success: true,
         message: "Address fetched successfully",
         address,
+        perPage,
+        currentPage,
+        prevPage,
+        nextPage,
+        totalPages,
       });
     } catch (err) {
       next(err);
