@@ -35,7 +35,6 @@ export class RestaurantController {
       };
       const user = await new User(data).save();
 
-      
       let restaurantData = {
         name: restaurant.res_name,
         short_name: restaurant.short_name,
@@ -62,9 +61,9 @@ export class RestaurantController {
           description: restaurant.description,
         };
       }
-      
+
       const restaurantDoc = await new Restaurant(restaurantData).save();
-      
+
       const categoriesData = JSON.parse(restaurant.categories).map(
         (category: any) => {
           return {
@@ -73,7 +72,7 @@ export class RestaurantController {
           };
         },
       );
-      
+
       const categories = await Category.insertMany(categoriesData);
       res.status(201).json({
         message: "Restaurant created successfully",
@@ -89,9 +88,31 @@ export class RestaurantController {
     res: Response,
     next: NextFunction,
   ) {
+    const data = (req as any).query;
+    const EARTH_RADIUS_IN_KM = 6378.1;
+    const perPage = 5;
+    const currentPage = Number(req.query.page) || 1;
+    let prevPage: number | null = currentPage == 1 ? null : currentPage - 1;
+    let nextPage: number | null = currentPage + 1;
     try {
-      const data = (req as any).query;
-      const EARTH_RADIUS_IN_KM = 6378.1;
+      const restaurantCount = await Restaurant.countDocuments({
+        location: {
+          $geoWithin: {
+            $centerSphere: [
+              [parseFloat(data.lng), parseFloat(data.lat)],
+              parseFloat(data.radius) / EARTH_RADIUS_IN_KM,
+            ],
+          },
+        },
+        status: "active",
+      });
+      const totalPages = Math.ceil(restaurantCount / perPage);
+      if (totalPages == 0 || totalPages == currentPage) {
+        nextPage = null;
+      }
+      if (totalPages < currentPage) {
+        throw new Error("No more orders");
+      }
       const restaurant = await Restaurant.find({
         location: {
           $geoWithin: {
@@ -110,6 +131,11 @@ export class RestaurantController {
       res.status(200).json({
         message: "Cities fetched successfully",
         restaurant,
+        perPage,
+        currentPage,
+        prevPage,
+        nextPage,
+        totalPages,
       });
     } catch (err) {
       next(err);
@@ -120,9 +146,33 @@ export class RestaurantController {
     res: Response,
     next: NextFunction,
   ) {
+    const data = (req as any).query;
+    const EARTH_RADIUS_IN_KM = 6378.1;
+    const perPage = 5;
+    const currentPage = Number(req.query.page) || 1;
+    let prevPage: number | null = currentPage == 1 ? null : currentPage - 1;
+    let nextPage: number | null = currentPage + 1;
     try {
-      const data = (req as any).query;
-      const EARTH_RADIUS_IN_KM = 6378.1;
+      const restaurantCount = await Restaurant.countDocuments({
+        location: {
+          $geoWithin: {
+            $centerSphere: [
+              [parseFloat(data.lng), parseFloat(data.lat)],
+              parseFloat(data.radius) / EARTH_RADIUS_IN_KM,
+            ],
+          },
+        },
+        name: { $regex: data.name, $options: "i" },
+        status: "active",
+      });
+      const totalPages = Math.ceil(restaurantCount / perPage);
+      if (totalPages == 0 || totalPages == currentPage) {
+        nextPage = null;
+      }
+      if (totalPages < currentPage) {
+        throw new Error("No more orders");
+      }
+
       const restaurant = await Restaurant.find({
         location: {
           $geoWithin: {
@@ -142,17 +192,18 @@ export class RestaurantController {
       res.status(200).json({
         message: "Cities fetched successfully",
         restaurant,
+        perPage,
+        currentPage,
+        prevPage,
+        nextPage,
+        totalPages,
       });
     } catch (err) {
       next(err);
     }
   }
 
-  static async getRestaurants(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
+  static async getRestaurants(req: Request, res: Response, next: NextFunction) {
     try {
       const restaurant = await Restaurant.find({
         status: "active",
