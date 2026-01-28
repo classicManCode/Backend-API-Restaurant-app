@@ -38,15 +38,38 @@ export class OrderController {
 
   static async getOrders(req: Request, res: Response, next: NextFunction) {
     const user_id = (req as any).user.aud;
-    const order = await Order.find({ user_id }, { user_id: 0, __v: 0 })
-      .populate(
-        "restaurant_id",
-        // "address name"
-      )
-      .exec();
-    res.status(201).json({
-      message: "Orders fetched successfully",
-      customerOrder: order,
-    });
+    const perPage = 5;
+    const currentPage = Number(req.query.page) || 1;
+    let prevPage: number | null = currentPage == 1 ? null : currentPage - 1;
+    let nextPage: number | null = currentPage + 1;
+    try {
+      const orderCount = await Order.countDocuments({ user_id });
+      const totalPages = Math.ceil(orderCount / perPage);
+      if (totalPages == 0 || totalPages == currentPage) {
+        nextPage = null;
+      }
+      if (totalPages < currentPage) {
+        throw new Error("No more orders");
+      }
+      const order = await Order.find({ user_id }, { user_id: 0, __v: 0 })
+        .skip(currentPage * perPage - perPage)
+        .limit(perPage)
+        .populate(
+          "restaurant_id",
+          // "address name"
+        )
+        .exec();
+      res.status(201).json({
+        message: "Orders fetched successfully",
+        customerOrder: order,
+        perPage,
+        currentPage,
+        prevPage,
+        nextPage,
+        totalPages,
+      });
+    } catch (err) {
+      next(err);
+    }
   }
 }
